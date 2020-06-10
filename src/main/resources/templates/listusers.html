@@ -1,0 +1,172 @@
+<!--
+=========================================================
+Material Dashboard - v2.1.2
+=========================================================
+
+Product Page: https://www.creative-tim.com/product/material-dashboard
+Copyright 2020 Creative Tim (https://www.creative-tim.com)
+Coded by Creative Tim
+
+=========================================================
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software. -->
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org/"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{main_layout.html}">
+
+    <head>
+        <meta charset="utf-8" />
+        <link rel="apple-touch-icon" sizes="76x76" href="../assets/img/apple-icon.png">
+        <link rel="icon" type="image/png" href="../assets/img/favicon.png">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+        <base th:href="${link}">
+        <title>
+            Material Dashboard by Creative Tim
+        </title>
+        <meta content='width=device-width, initial-scale=1.0, shrink-to-fit=no' name='viewport' />
+        <!--     Fonts and icons     -->
+        <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons" />
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+        <!-- CSS Files -->
+        <link th:href="@{css/material-dashboard.css?v=2.1.2}" rel="stylesheet" />
+        <!-- CSS Just for demo purpose, don't include it in your project -->
+        <link th:href="@{demo/demo.css}" rel="stylesheet" />
+
+
+        <!--CSS Table-->
+
+        <link rel="stylesheet" type="text/css" th:href="@{vendor/bootstrap/css/bootstrap.min.css}">
+        <!--===============================================================================================-->
+        <link rel="stylesheet" type="text/css" th:href="@{fonts/font-awesome-4.7.0/css/font-awesome.min.css}">
+        <!--===============================================================================================-->
+        <link rel="stylesheet" type="text/css" th:href="@{vendor/animate/animate.css}">
+        <!--===============================================================================================-->
+        <link rel="stylesheet" type="text/css" th:href="@{vendor/select2/select2.min.css}">
+        <!--===============================================================================================-->
+        <link rel="stylesheet" type="text/css" th:href="@{vendor/perfect-scrollbar/perfect-scrollbar.css}">
+        <!--===============================================================================================-->
+        <link rel="stylesheet" type="text/css" th:href="@{css/util.css}">
+        <link rel="stylesheet" type="text/css" th:href="@{css/main-table.css}">
+        <!--============================================ END ===================================================-->
+
+        <!--CSS SEARCH-->
+        <link rel="stylesheet" type="text/css" th:href="@{css/main-search.css}">
+        <link href="https://fonts.googleapis.com/css?family=Poppins" rel="stylesheet" />
+    </head>
+
+    <body class="" th:onload="${msg}!=null?'alert(\''+${msg}+'\');:'''">
+
+        <div layout:fragment="header">
+
+            <nav class="navbar navbar-expand-lg navbar-transparent navbar-absolute fixed-top " >
+                <div class="container-fluid">
+                    <div class="navbar-wrapper">
+                        <p style="font-size: 35px;font-weight:100;color:#76C06C " class="navbar-brand" href="javascript:;">LIST OF USERS</p>
+                    </div>
+                </div>
+            </nav>
+            <!-- The Modal -->
+            <div style="z-index: 1045"  class="modal" id="myModal" tabindex="9999" role="dialog" aria-labelledby="myModalLabel">
+                <div class="modal-dialog" role="document">
+                    <form th:object='${role}'  th:action="@{admin/roles/update}" th:method="post" >
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 style="color:#76C06C;font-weight: bold;font-size: 20px " class="modal-title" id="myModalLabel">Update Users</h4>
+                            </div>
+                            <div class="modal-body">
+                                <div class="form-group">
+                                    <input type="text" id="id" name="id" class="form-control" th:value="${id}" hidden="true" required>
+                                </div>
+                                <div class="form-group">
+                                    <label style="color:#76C06C" th:for="name">Name</label>
+                                    <input type="text" id="name" name="name" class="form-control" required>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
+                                <input type="submit" class="btn btn-success" value="Add">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="s003">
+                <form >
+                    <div class="inner-form">
+                        <div class="input-field first-wrap">
+                            <div class="input-select">
+                                <select data-trigger="" name="choices-single-defaul">
+                                    <option placeholder="" >Filter</option>
+                                    <option value="id">ID</option>
+                                    <option value="name">Name</option>
+                                    <option value="name">Email</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="input-field second-wrap">
+                            <input id="search" type="text" style="color:#76C06C " placeholder="Enter Keywords?" />
+                        </div>
+                        <div class="input-field third-wrap">
+                            <button class="btn-search" type="button">
+                                <svg class="svg-inline--fa fa-search fa-w-16" aria-hidden="true" data-prefix="fas" data-icon="search" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                                <path fill="currentColor" d="M505 442.7L405.3 343c-4.5-4.5-10.6-7-17-7H372c27.6-35.3 44-79.7 44-128C416 93.1 322.9 0 208 0S0 93.1 0 208s93.1 208 208 208c48.3 0 92.7-16.4 128-44v16.3c0 6.4 2.5 12.5 7 17l99.7 99.7c9.4 9.4 24.6 9.4 33.9 0l28.3-28.3c9.4-9.4 9.4-24.6.1-34zM208 336c-70.7 0-128-57.2-128-128 0-70.7 57.2-128 128-128 70.7 0 128 57.2 128 128 0 70.7-57.2 128-128 128z"></path>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div layout:fragment="content">
+            <div class="limiter">
+                <div class="container-table100">
+                    <div class="wrap-table100">
+                        <div class="table100 ver1">
+                            <div class="table100-firstcol">
+                                <table >
+                                    <thead >
+                                        <tr class="row100 head" >
+                                            <th class="cell100 column1" style="color:#76C06C ">Employees</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody th:each="role : ${list}">
+                                        <tr class="row100 body">
+                                            <td class="cell100 column1" style="color:#76C06C "><span th:text="${role.id}"></span></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <div class="wrap-table100-nextcols js-pscroll">
+                                <div class="table100-nextcols">
+                                    <table id="table">
+                                        <thead>
+                                            <tr class="row100 head">
+                                                <th class="cell100 column2" style="color:#76C06C ">Name</th>
+                                                <th class="cell100 column6" style="color:#76C06C ">Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr th:each="role : ${list}" class="row100 body customerIDCell" >
+                                                <td class="cell100 column2" style="color:#76C06C " hidden="true"><span th:text="${role.id}"></span></td>
+                                                <td class="cell100 column2" style="color:#76C06C "><span th:text="${role.name}"></span></td>
+                                                <td class="cell100 column6" style="color:#76C06C ">
+                                                    <a
+                                                        id="myButton"
+                                                        class="button-update update"  th:data-id="${role.id}">Update</a></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+
+</html>
